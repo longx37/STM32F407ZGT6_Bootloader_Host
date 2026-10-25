@@ -1,0 +1,29 @@
+# Documentation (not tracked)
+*.md
+
+# Qt build output
+build/
+
+# Qt Creator / user-specific files
+*.pro.user
+*.pro.user.*
+
+# Compiled objects / binaries
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+
+# Qt auto-generated
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
