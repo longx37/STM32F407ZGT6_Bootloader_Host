@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QByteArray>
+#include <QTimer>
 
 class QComboBox;
 class QLineEdit;
@@ -29,6 +30,7 @@ private slots:
     void onSend();          // 发送文本
     void onClear();         // 清空接收区
     void onReadyRead();     // 串口收到数据
+    void onTimeout();
 
 private:
     QComboBox   *m_port;
@@ -47,6 +49,17 @@ private:
 
     QSerialPort *m_serial = nullptr;
     QByteArray   m_fw;
+
+    QByteArray m_rxBuf;          // 接收缓冲（粘包/半包）
+    QTimer     m_timeout;        // 等应答超时
+    int        m_retry = 0;      // NAK/超时 重发计数
+    bool       m_upgrading = false;
+
+    QByteArray buildFrame(quint16 cmd, const QByteArray &data, quint32 offset);
+    static quint16 crc16Modbus(const QByteArray &data);
+    void sendAllFrames();
+    void handleAck();
+    void handleNak(const QByteArray &bitmap);
 };
 
 #endif // SERIAL_H
